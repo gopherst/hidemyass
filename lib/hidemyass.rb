@@ -35,6 +35,7 @@ module Hidemyass
         { port: node.at_xpath('td[3]').content.strip,
           host: node.at_xpath('td[2]/span').xpath('text() | *[not(contains(@style,"display:none"))]').
                   map(&:content).compact.join.to_s }
+      end
     end
 
     def request(host = @host, port = @port, first_without_proxy = @first_without_proxy)
