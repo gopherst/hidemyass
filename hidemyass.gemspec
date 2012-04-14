@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "hidemyass"
   gem.require_paths = ["lib"]
   gem.version       = Hidemyass::VERSION
+  
+  gem.add_dependency "nokogiri"
 end
