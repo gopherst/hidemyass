@@ -1,7 +1,8 @@
 # HIDE MY ASS!
 
-Hide My Ass! fetches and connects to listed proxies at www.hidemyass.com
-This ruby gem lets you connect anonymously, fetch proxies from hidemyass.com and try each one until a successful connection is made.
+Hide My Ass! fetches and connects to listed proxies at www.hidemyass.com.
+
+This ruby gem aims to connect you anonymously, it fetches proxies from hidemyass.com and tries each one until a successful connection is made.
 
 ## Installation
 
