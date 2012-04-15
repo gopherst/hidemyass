@@ -1,12 +1,11 @@
 require 'nokogiri'
 require 'open-uri'
 require 'net/http'
-require 'logger'
-
 require 'hidemyass/version'
-require 'hidemyass/railtie'
-require 'hidemyass/logger'
 require 'hidemyass/http'
+require 'hidemyass/logger'
+require 'hidemyass/railtie'
+require 'logger'
 
 module Hidemyass
   extend Logger
@@ -24,7 +23,8 @@ module Hidemyass
                  
    def self.options
      @options ||= {
-       :log => true
+       :log => true,
+       :local => false
      }
    end
 

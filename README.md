@@ -20,13 +20,33 @@ Or install it yourself as:
 
 ## Usage
 
-    @uri = URI('http://example.com')
+    @uri = URI('http://www.iana.org/domains/example/')
     @request = Net::HTTP::Get.new(@uri.request_uri)
     @request['Referer'] = @uri.host
     
-    response = Hidemyass::HTTP.start(@uri.host) do |http|
+    response = Hidemyass::HTTP.start(@uri.host, @uri.port) do |http|
       http.request(@request)
     end
+    
+    response
+    => #<Net::HTTPOK 200 OK readbody=true>
+    
+This method defaults to return on HTTPSuccess (2xx)
+If you want more control to follow redirections or whatever, you can retrieve the proxies list and connect manually
+
+    Hidemyass.proxies.each do |proxy|
+      response = Net::HTTP::Proxy(proxy[:host], proxy[:port]).start(@uri.host, @uri.port) do |http|
+        http.request(@request)
+      end
+      if response.class.ancestors.include?(Net::HTTPRedirection)
+        # ...
+      end
+    end
+    
+To try connecting through local machine before trying proxies
+
+    Hidemyass.options[:local] = true
+    Hidemyass::HTTP.start ...
 
 ## Contributing
 

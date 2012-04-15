@@ -1,14 +1,13 @@
 module Hidemyass
   module HTTP
-    def HTTP.start(address, opts = { :try_local => false }, *arg, &block)
-      Hidemyass.log 'Connecting to ' + address + ' from:'
+    def HTTP.start(address, *arg, &block)
+      Hidemyass.log 'Connecting to ' + address + ' through:'
       response = nil
   
-      if opts[:try_local]
+      if Hidemyass.options[:local]
         begin
           Hidemyass.log 'localhost...'
           response = Net::HTTP.start(address, *arg, &block)
-          Hidemyass.log response.class.to_s
           if response.class.ancestors.include?(Net::HTTPSuccess)
             return response
           end
