@@ -20,7 +20,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions
+    @uri = URI('http://example.com')
+    @request = Net::HTTP::Get.new(@uri.request_uri)
+    @request['Referer'] = @uri.host
+    
+    response = Hidemyass::HTTP.start(@uri.host) do |http|
+      http.request(@request)
+    end
 
 ## Contributing
 
