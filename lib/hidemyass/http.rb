@@ -13,7 +13,7 @@ module Hidemyass
             return response
           end
         rescue *HTTP_ERRORS => error
-          Hidemyass.log :error, error
+          Hidemyass.log error
         end
       end
       
@@ -26,7 +26,7 @@ module Hidemyass
             return response
           end
         rescue *HTTP_ERRORS => error
-          Hidemyass.log :error, error
+          Hidemyass.log error
         end
       end
 
