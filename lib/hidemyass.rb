@@ -4,6 +4,7 @@ require 'net/http'
 require 'logger'
 
 require 'hidemyass/version'
+require 'hidemyass/railtie'
 require 'hidemyass/logger'
 require 'hidemyass/http'
 
