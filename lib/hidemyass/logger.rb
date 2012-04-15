@@ -1,6 +1,6 @@
 module Hidemyass
   module Logger
-    def log message
+    def log(message)
       logger.info("#{LOG_PREFIX} #{message}") if logging?
     end
 

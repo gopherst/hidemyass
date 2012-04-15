@@ -6,15 +6,14 @@ module Hidemyass
   
       if opts[:try_local]
         begin
-          Hidemyass.log 'localhost'
+          Hidemyass.log 'localhost...'
           response = Net::HTTP.start(address, *arg, &block)
           Hidemyass.log response.class.to_s
           if response.class.ancestors.include?(Net::HTTPSuccess)
-            Hidemyass.log 'Success'
             return response
           end
         rescue *HTTP_ERRORS => error
-          Hidemyass.log error
+          Hidemyass.log :error, error
         end
       end
       
@@ -24,11 +23,10 @@ module Hidemyass
           response = Net::HTTP::Proxy(proxy[:host], proxy[:port]).start(address, *arg, &block)
           Hidemyass.log response.class.to_s
           if response.class.ancestors.include?(Net::HTTPSuccess)
-            Hidemyass.log 'Success'
             return response
           end
         rescue *HTTP_ERRORS => error
-          Hidemyass.log error
+          Hidemyass.log :error, error
         end
       end
 
