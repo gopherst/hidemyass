@@ -1,40 +1,38 @@
 module Hidemyass
-  class HTTP
-    attr_reader :proxies, :response
-
-    def start(address, opts = { :try_local => false }, *arg, &block)
-      @response = nil
+  module HTTP
+    def HTTP.start(address, opts = { :try_local => false }, *arg, &block)
+      Hidemyass.log 'Connecting to ' + address + ' from:'
+      response = nil
   
       if opts[:try_local]
         begin
-          @response = Net::HTTP.start(address, *arg, &block)
-          return if @response == Net::HTTPSuccess
+          Hidemyass.log 'localhost'
+          response = Net::HTTP.start(address, *arg, &block)
+          Hidemyass.log response.class.to_s
+          if response.class.ancestors.include?(Net::HTTPSuccess)
+            Hidemyass.log 'Success'
+            return response
+          end
         rescue *HTTP_ERRORS => error
-          log :error, error
+          Hidemyass.log error
         end
       end
-
-      proxies.each do |proxy|
+      
+      Hidemyass.proxies.each do |proxy|
         begin
-          @response = Net::HTTP::Proxy(proxy[:host], proxy[:port]).start(*arg, &block)
-          return if @response == Net::HTTPSuccess
+          Hidemyass.log proxy[:host] + ':' + proxy[:port]
+          response = Net::HTTP::Proxy(proxy[:host], proxy[:port]).start(address, *arg, &block)
+          Hidemyass.log response.class.to_s
+          if response.class.ancestors.include?(Net::HTTPSuccess)
+            Hidemyass.log 'Success'
+            return response
+          end
         rescue *HTTP_ERRORS => error
-          log :error, error
+          Hidemyass.log error
         end
       end
 
-      @response
-    end
-
-    def proxies
-      uri = URI.parse('http://%s/proxy-list/search-225729' % Hidemyass::HOST)
-      dom = Nokogiri::HTML(open(uri))
-
-      @proxies ||= dom.xpath('//table[@id="listtable"]/tr').collect do |node|
-        { port: node.at_xpath('td[3]').content.strip,
-          host: node.at_xpath('td[2]/span').xpath('text() | *[not(contains(@style,"display:none"))]').
-                  map(&:content).compact.join.to_s }
-      end
+      response
     end
   end
 end

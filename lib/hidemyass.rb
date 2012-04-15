@@ -3,6 +3,7 @@ require 'open-uri'
 require 'net/http'
 
 require 'hidemyass/version'
+require 'hidemyass/logger'
 require 'hidemyass/http'
 
 module Hidemyass
@@ -18,15 +19,16 @@ module Hidemyass
                  Net::HTTPHeaderSyntaxError,
                  Net::ProtocolError]
 
-  def logger
-    if defined?(Rails.logger)
-      Rails.logger
-    elsif defined?(RAILS_DEFAULT_LOGGER)
-      RAILS_DEFAULT_LOGGER
-    end
-  end
+  class << self
+    def proxies
+      uri = URI.parse('http://%s/proxy-list/search-225729' % HOST)
+      dom = Nokogiri::HTML(open(uri))
 
-  def log(level, message, response = nil)
-    logger.send level, LOG_PREFIX + message if logger
+      @proxies ||= dom.xpath('//table[@id="listtable"]/tr').collect do |node|
+        { port: node.at_xpath('td[3]').content.strip,
+          host: node.at_xpath('td[2]/span').xpath('text() | *[not(contains(@style,"display:none"))]').
+                  map(&:content).compact.join.to_s }
+      end
+    end
   end
 end
