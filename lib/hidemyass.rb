@@ -29,7 +29,7 @@ module Hidemyass
    end
 
   def self.proxies
-    uri = URI.parse('http://%s/proxy-list/search-225729' % HOST)
+    uri = URI.parse('http://%s/proxy-list/search-226094' % HOST)
     dom = Nokogiri::HTML(open(uri))
 
     @proxies ||= dom.xpath('//table[@id="listtable"]/tr').collect do |node|
