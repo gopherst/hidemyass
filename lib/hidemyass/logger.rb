@@ -1,3 +1,5 @@
+require 'logger'
+
 module HideMyAss
   module Logger
     def log(message)

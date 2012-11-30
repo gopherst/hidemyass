@@ -1,12 +1,12 @@
-require 'nokogiri'
 require 'open-uri'
 require 'net/http'
+require 'nokogiri'
+
 require 'hidemyass/version'
 require 'hidemyass/ip'
 require 'hidemyass/http'
 require 'hidemyass/logger'
-require 'hidemyass/railtie'
-require 'logger'
+require 'hidemyass/railtie' if defined?(Rails)
 
 module HideMyAss
   extend Logger
