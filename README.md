@@ -55,6 +55,12 @@ To clear the cached proxies on every request (disabled by default):
 or simply run:
 
     HideMyAss.clear_cache
+    
+## Roadmap
+
+* Get proxies from other pages
+* Improve tests suite
+* Clean code and refactor
 
 ## Contributing
 
