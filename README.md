@@ -1,4 +1,4 @@
-# HIDE MY ASS!
+# HIDE MY ASS! [![Build Status](https://travis-ci.org/jassa/hidemyass.png)](https://travis-ci.org/jassa/hidemyass)
 
 Hide My Ass! fetches and connects to proxies at www.hidemyass.com.
 
