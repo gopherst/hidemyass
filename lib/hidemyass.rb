@@ -2,15 +2,18 @@ require 'nokogiri'
 require 'open-uri'
 require 'net/http'
 require 'hidemyass/version'
+require 'hidemyass/ip'
 require 'hidemyass/http'
 require 'hidemyass/logger'
 require 'hidemyass/railtie'
 require 'logger'
 
-module Hidemyass
+module HideMyAss
   extend Logger
 
-  HOST = 'hidemyass.com'
+  SITE     = "http://hidemyass.com".freeze
+  ENDPOINT = "http://hidemyass.com/proxy-list/search-291666".freeze
+
   LOG_PREFIX = '** [hidemyass] '
 
   HTTP_ERRORS = [Timeout::Error,
@@ -24,21 +27,26 @@ module Hidemyass
    def self.options
      @options ||= {
        :log => true,
-       :local => false
+       :local => false,
+       :clear_cache => false
      }
    end
 
   def self.proxies
-    uri = URI.parse('http://%s/proxy-list/search-291666' % HOST)
-    dom = Nokogiri::HTML(open(uri))
+    clear_cache if options[:clear_cache]
+    html = Nokogiri::HTML(open(URI.parse(ENDPOINT))) unless @proxies
 
-    @proxies ||= dom.xpath('//table[@id="listtable"]/tr').collect do |node|
+    @proxies ||= html.xpath('//table[@id="listtable"]/tr').collect do |node|
       ip = HideMyAss::IP.new(node.at_xpath('td[2]/span'))
       next unless ip.valid?
       { 
-        port: node.at_xpath('td[3]').content.strip,
-        host: ip.address
+        host: ip.address,
+        port: node.at_xpath('td[3]').content.strip
       }
     end
+  end
+  
+  def self.clear_cache
+    @proxies = nil
   end
 end

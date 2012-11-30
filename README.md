@@ -1,6 +1,6 @@
 # HIDE MY ASS!
 
-Hide My Ass! fetches and connects to listed proxies at www.hidemyass.com.
+Hide My Ass! fetches and connects to proxies at www.hidemyass.com.
 
 This ruby gem aims to connect you anonymously, it fetches proxies from hidemyass.com and tries each one until a successful connection is made.
 
@@ -24,7 +24,7 @@ Or install it yourself as:
     @request = Net::HTTP::Get.new(@uri.request_uri)
     @request['Referer'] = @uri.host
     
-    response = Hidemyass::HTTP.start(@uri.host, @uri.port) do |http|
+    response = HideMyAss::HTTP.start(@uri.host, @uri.port) do |http|
       http.request(@request)
     end
     
@@ -34,7 +34,7 @@ Or install it yourself as:
 This method defaults to return on HTTPSuccess (2xx)
 If you want more control to follow redirections or whatever, you can retrieve the proxies list and connect manually
 
-    Hidemyass.proxies.each do |proxy|
+    HideMyAss.proxies.each do |proxy|
       response = Net::HTTP::Proxy(proxy[:host], proxy[:port]).start(@uri.host, @uri.port) do |http|
         http.request(@request)
       end
@@ -43,10 +43,18 @@ If you want more control to follow redirections or whatever, you can retrieve th
       end
     end
     
-To try connecting through local machine before trying proxies
+To try connecting through local machine before trying proxies:
 
-    Hidemyass.options[:local] = true
-    Hidemyass::HTTP.start ...
+    HideMyAss.options[:local] = true
+    HideMyAss::HTTP.start ...
+    
+To clear the cached proxies on every request (disabled by default):
+
+    HideMyAss.options[:clear_cache] = true
+    
+or simply run:
+
+    HideMyAss.clear_cache
 
 ## Contributing
 

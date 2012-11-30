@@ -1,31 +1,31 @@
-module Hidemyass
+module HideMyAss
   module HTTP
     def HTTP.start(address, *arg, &block)
-      Hidemyass.log 'Connecting to ' + address + ' through:'
+      HideMyAss.log 'Connecting to ' + address + ' through:'
       response = nil
   
-      if Hidemyass.options[:local]
+      if HideMyAss.options[:local]
         begin
-          Hidemyass.log 'localhost...'
+          HideMyAss.log 'localhost...'
           response = Net::HTTP.start(address, *arg, &block)
           if response.class.ancestors.include?(Net::HTTPSuccess)
             return response
           end
         rescue *HTTP_ERRORS => error
-          Hidemyass.log error
+          HideMyAss.log error
         end
       end
       
-      Hidemyass.proxies.each do |proxy|
+      HideMyAss.proxies.each do |proxy|
         begin
-          Hidemyass.log proxy[:host] + ':' + proxy[:port]
+          HideMyAss.log proxy[:host] + ':' + proxy[:port]
           response = Net::HTTP::Proxy(proxy[:host], proxy[:port]).start(address, *arg, &block)
-          Hidemyass.log response.class.to_s
+          HideMyAss.log response.class.to_s
           if response.class.ancestors.include?(Net::HTTPSuccess)
             return response
           end
         rescue *HTTP_ERRORS => error
-          Hidemyass.log error
+          HideMyAss.log error
         end
       end
 

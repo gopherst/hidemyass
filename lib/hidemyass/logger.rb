@@ -1,4 +1,4 @@
-module Hidemyass
+module HideMyAss
   module Logger
     def log(message)
       logger.info("#{LOG_PREFIX} #{message}") if logging?
