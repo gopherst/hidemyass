@@ -29,13 +29,16 @@ module Hidemyass
    end
 
   def self.proxies
-    uri = URI.parse('http://%s/proxy-list/search-226094' % HOST)
+    uri = URI.parse('http://%s/proxy-list/search-291666' % HOST)
     dom = Nokogiri::HTML(open(uri))
 
     @proxies ||= dom.xpath('//table[@id="listtable"]/tr').collect do |node|
-      { port: node.at_xpath('td[3]').content.strip,
-        host: node.at_xpath('td[2]/span').xpath('text() | *[not(contains(@style,"display:none"))]').
-                map(&:content).compact.join.to_s }
+      ip = HideMyAss::IP.new(node.at_xpath('td[2]/span'))
+      next unless ip.valid?
+      { 
+        port: node.at_xpath('td[3]').content.strip,
+        host: ip.address
+      }
     end
   end
 end
