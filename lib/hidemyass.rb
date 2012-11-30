@@ -12,13 +12,15 @@ module HideMyAss
   extend Logger
 
   SITE     = "http://hidemyass.com".freeze
-  ENDPOINT = "http://hidemyass.com/proxy-list/search-291666".freeze
+  # TODO: Find a way to get ideal results in the custom search
+  ENDPOINT = "http://hidemyass.com/proxy-list/search-750598".freeze
 
   LOG_PREFIX = '** [hidemyass] '
-
+  
   HTTP_ERRORS = [Timeout::Error,
                  Errno::EINVAL,
                  Errno::ECONNRESET,
+                 Errno::ECONNREFUSED,
                  EOFError,
                  Net::HTTPBadResponse,
                  Net::HTTPHeaderSyntaxError,
