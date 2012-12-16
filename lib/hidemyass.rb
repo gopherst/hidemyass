@@ -13,7 +13,7 @@ module HideMyAss
 
   SITE     = "http://hidemyass.com".freeze
   # TODO: Find a way to get ideal results in the custom search
-  ENDPOINT = "http://hidemyass.com/proxy-list/search-750598".freeze
+  ENDPOINT = "http://hidemyass.com/proxy-list/search-768392".freeze
 
   LOG_PREFIX = '** [hidemyass] '
   
