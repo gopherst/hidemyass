@@ -58,6 +58,7 @@ or simply run:
     
 ## Roadmap
 
+* Improve the quality of returned proxies: currently I'm using the custom search url, but it seems to expire every n-days
 * Get proxies from other pages
 * Improve tests suite
 * Clean code and refactor
