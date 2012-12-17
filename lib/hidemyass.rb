@@ -21,6 +21,7 @@ module HideMyAss
                  Errno::EINVAL,
                  Errno::ECONNRESET,
                  Errno::ECONNREFUSED,
+                 Errno::ETIMEDOUT,
                  EOFError,
                  Net::HTTPBadResponse,
                  Net::HTTPHeaderSyntaxError,
