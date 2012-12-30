@@ -6,7 +6,7 @@ describe HideMyAss::IP do
   # but hidemyass.com seems to be changing their encoding strategy often.
   # By having real data we ensure this gem is working.
   it "decodes encoded address" do
-    html = Nokogiri::HTML(open(URI.parse(HideMyAss::ENDPOINT)))
+    html = HideMyAss.get_hma_body
     
     HideMyAss::IP.new(html.at_xpath('//table[@id="listtable"]/tr/td[2]/span'))
       .should be_valid
