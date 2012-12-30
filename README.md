@@ -31,8 +31,8 @@ Or install it yourself as:
     response
     => #<Net::HTTPOK 200 OK readbody=true>
     
-This method defaults to return on HTTPSuccess (2xx)
-If you want more control to follow redirections or whatever, you can retrieve the proxies list and connect manually
+This method will try successive proxies until one returns HTTPSuccess (2xx).
+If you want more control (e.g. to follow redirections), you can retrieve the proxies list and connect manually
 
     HideMyAss.proxies.each do |proxy|
       response = Net::HTTP::Proxy(proxy[:host], proxy[:port]).start(@uri.host, @uri.port) do |http|
@@ -58,15 +58,14 @@ or simply run:
     
 ## Roadmap
 
-* Improve the quality of returned proxies: currently I'm using the custom search url, but it seems to expire every n-days
-* Get proxies from other pages
+* Get proxies from all pages
 * Improve tests suite
 * Clean code and refactor
 
 ## Contributing
 
 1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
+2. Create your feature branch (`git checkout -b my-new-feature`), and make sure to include specs
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
