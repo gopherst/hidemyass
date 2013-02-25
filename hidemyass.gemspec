@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "hidemyass"
   gem.require_paths = ["lib"]
   gem.version       = HideMyAss::VERSION
-  
-  gem.add_dependency "nokogiri", "~> 1.5.5"
+
+  gem.add_dependency "nokogiri", "~> 1.5.6"
   gem.add_development_dependency "rspec", "~> 2.12.0"
 end
