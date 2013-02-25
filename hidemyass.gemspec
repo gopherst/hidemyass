@@ -16,5 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = HideMyAss::VERSION
 
   gem.add_dependency "nokogiri", "~> 1.5.6"
-  gem.add_development_dependency "rspec", "~> 2.12.0"
+  gem.add_development_dependency "rspec", "~> 2.13.0"
 end
