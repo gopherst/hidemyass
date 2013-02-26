@@ -1,39 +1,45 @@
 require 'open-uri'
 require 'net/http'
 require 'nokogiri'
+require 'typhoeus'
 
 require 'hidemyass/version'
 require 'hidemyass/ip'
-require 'hidemyass/http'
 require 'hidemyass/logger'
+require 'hidemyass/request'
 require 'hidemyass/railtie' if defined?(Rails)
 
 module HideMyAss
   extend Logger
+  extend Request
 
   SITE     = "http://hidemyass.com".freeze
   ENDPOINT = "http://hidemyass.com/proxy-list/".freeze
 
-  LOG_PREFIX = '** [hidemyass] '
-
-  HTTP_ERRORS = [
-    Timeout::Error,
-    Errno::EINVAL,
-    Errno::ECONNRESET,
-    Errno::ECONNREFUSED,
-    Errno::ETIMEDOUT,
-    EOFError,
-    Net::HTTPBadResponse,
-    Net::HTTPHeaderSyntaxError,
-    Net::ProtocolError
-  ]
+  LOG_PREFIX = "** [hidemyass]"
 
   def self.options
     @options ||= {
       :log   => true,
       :local => false,
-      :clear_cache => false
+      :clear_cache => false,
+      :max_concurrency => nil
     }
+  end
+
+  # Hydra will handle how many requests you can
+  # make in parallel.
+  #
+  # Typhoeus built in limit is 200,
+  # but this depends heavily on your implementation.
+  # If you want to return when you get a successful response,
+  # you should set a much, much lower limit.
+  def self.hydra
+    opts = if options[:max_concurrency]
+      { :max_concurrency => options[:max_concurrency] }
+    end
+
+    @hydra ||= Typhoeus::Hydra.new(opts || {})
   end
 
   # Clears cached proxies.
@@ -55,7 +61,7 @@ module HideMyAss
           host: ip.address,
           port: node.at_xpath('td[3]').content.strip
         }
-      end
+      end.compact
     end
   end
 
@@ -64,7 +70,7 @@ module HideMyAss
     @form_data = data if data
   end
 
-  # Set form data for HMA search
+  # Form data for HMA search
   #
   # c[]  - Countries
   # p    - Port. Defaults to all ports.
@@ -82,7 +88,7 @@ module HideMyAss
     @form_data ||= {
       "c[]"  => ["Brazil", "Mexico", "United States"],
       "p"    => nil,
-      "pr[]" => [0,1],
+      "pr[]" => [0],
       "a[]"  => [0,1,2,3],
       "sp[]" => [2,3],
       "ct[]" => [2,3],

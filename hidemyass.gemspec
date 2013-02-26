@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 require File.expand_path('../lib/hidemyass/version', __FILE__)
 
 Gem::Specification.new do |gem|
@@ -16,5 +15,6 @@ Gem::Specification.new do |gem|
   gem.version       = HideMyAss::VERSION
 
   gem.add_dependency "nokogiri", "~> 1.5.6"
+  gem.add_dependency "typhoeus", "~> 0.6.1"
   gem.add_development_dependency "rspec", "~> 2.13.0"
 end
