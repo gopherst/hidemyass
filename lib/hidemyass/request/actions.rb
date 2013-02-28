@@ -15,7 +15,7 @@ module HideMyAss
       #
       # Returns Typhoeus::Response instance.
       def get(base_url, options = {})
-        Request.new(base_url, options.merge!(:method => :get))
+        Request.new(base_url, options.merge!(:method => :get)).run
       end
 
       # Make a post request.
@@ -25,7 +25,7 @@ module HideMyAss
       #
       # Returns Typhoeus::Response instance.
       def post(base_url, options = {})
-        Request.new(base_url, options.merge!(:method => :post))
+        Request.new(base_url, options.merge!(:method => :post)).run
       end
 
       # Make a put request.
@@ -35,7 +35,7 @@ module HideMyAss
       #
       # Returns Typhoeus::Response instance.
       def put(base_url, options = {})
-        Request.new(base_url, options.merge!(:method => :put))
+        Request.new(base_url, options.merge!(:method => :put)).run
       end
 
       # Make a delete request.
@@ -45,7 +45,7 @@ module HideMyAss
       #
       # Returns Typhoeus::Response instance.
       def delete(base_url, options = {})
-        Request.new(base_url, options.merge!(:method => :delete))
+        Request.new(base_url, options.merge!(:method => :delete)).run
       end
 
     end # Actions
