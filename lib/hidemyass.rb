@@ -1,11 +1,9 @@
-require 'open-uri'
-require 'net/http'
 require 'nokogiri'
 require 'typhoeus'
 
 require 'hidemyass/version'
-require 'hidemyass/ip'
 require 'hidemyass/logger'
+require 'hidemyass/ip'
 require 'hidemyass/request'
 require 'hidemyass/railtie' if defined?(Rails)
 
@@ -24,23 +22,25 @@ module HideMyAss
       :log   => true,
       :local => false,
       :clear_cache => false,
-      :max_concurrency => nil
+      :max_concurrency => 10
     }
   end
 
   # Hydra will handle how many requests you can
   # make in parallel.
   #
-  # Typhoeus built in limit is 200,
+  # Typhoeus built-in limit is 200,
   # but this depends heavily on your implementation.
-  # If you want to return when you get a successful response,
-  # you should set a much, much lower limit.
+  # If you want to return as soon as you get a successful response,
+  # you should set a much, much lower limit, e.g. 10
   def hydra
-    opts = if options[:max_concurrency]
-      { :max_concurrency => options[:max_concurrency] }
-    end
+    @hydra ||= begin
+      opts = if options[:max_concurrency]
+        { :max_concurrency => options[:max_concurrency] }
+      end
 
-    @hydra ||= Typhoeus::Hydra.new(opts || {})
+      Typhoeus::Hydra.new(opts || {})
+    end
   end
 
   # Clears cached proxies.
@@ -49,7 +49,7 @@ module HideMyAss
   end
 
   # Returns HMA proxies.
-  def self.proxies
+  def proxies
     clear_cache if options[:clear_cache]
 
     @proxies ||= begin
@@ -85,7 +85,7 @@ module HideMyAss
   # sortBy - Sort by. Defaults to date.
   #
   # Returns form data hash.
-  def self.form_data
+  def form_data
     @form_data ||= {
       "c[]"  => ["Brazil", "Mexico", "United States"],
       "p"    => nil,
@@ -103,18 +103,10 @@ module HideMyAss
   private
 
   # Returns HMA body as a Nokogiri HTML Document.
-  def self.get_hma_body
-    res = Net::HTTP.post_form(URI(ENDPOINT), form_data)
+  def get_hma_body
+    res = Typhoeus.post(ENDPOINT, body: form_data,
+      followlocation: true)
 
-    body = case res
-    when Net::HTTPSuccess then
-      res.body
-    when Net::HTTPRedirection then
-      Net::HTTP.get_response(URI(SITE + res['location'])).body
-    else
-      res.value
-    end
-
-    return Nokogiri::HTML(body)
+    return Nokogiri::HTML(res.body)
   end
 end
