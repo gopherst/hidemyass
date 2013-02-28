@@ -10,15 +10,16 @@ require 'hidemyass/request'
 require 'hidemyass/railtie' if defined?(Rails)
 
 module HideMyAss
+  extend self
   extend Logger
-  extend Request
+  extend Request::Actions
 
   SITE     = "http://hidemyass.com".freeze
   ENDPOINT = "http://hidemyass.com/proxy-list/".freeze
 
   LOG_PREFIX = "** [hidemyass]"
 
-  def self.options
+  def options
     @options ||= {
       :log   => true,
       :local => false,
@@ -34,7 +35,7 @@ module HideMyAss
   # but this depends heavily on your implementation.
   # If you want to return when you get a successful response,
   # you should set a much, much lower limit.
-  def self.hydra
+  def hydra
     opts = if options[:max_concurrency]
       { :max_concurrency => options[:max_concurrency] }
     end
@@ -43,7 +44,7 @@ module HideMyAss
   end
 
   # Clears cached proxies.
-  def self.clear_cache
+  def clear_cache
     @proxies = nil
   end
 
@@ -66,7 +67,7 @@ module HideMyAss
   end
 
   # Sets form data to support custom searches.
-  def self.form_data=(data)
+  def form_data=(data)
     @form_data = data if data
   end
 
