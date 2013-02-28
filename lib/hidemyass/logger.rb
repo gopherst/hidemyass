@@ -2,11 +2,12 @@ require 'logger'
 
 module HideMyAss
   module Logger
+
     def log(message)
       logger.info("#{LOG_PREFIX} #{message}") if logging?
     end
 
-    def logger #:nodoc:
+    def logger
       @logger ||= options[:logger] || ::Logger.new(STDOUT)
     end
 
@@ -14,8 +15,9 @@ module HideMyAss
       @logger = logger
     end
 
-    def logging? #:nodoc:
+    def logging?
       options[:log]
     end
-  end
-end
+
+  end # Logger
+end # HideMyAss
