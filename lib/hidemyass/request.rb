@@ -6,6 +6,8 @@ module HideMyAss
   class Request
     extend Request::Actions
 
+    attr_accessor :response
+
     # Create a new request,
     # and run it through proxies until success.
     #
@@ -26,7 +28,7 @@ module HideMyAss
         # Pass request to Typhoeus
         request = Typhoeus::Request.new(base_url, options)
         request.on_complete do |response|
-          HideMyAss.log options[:proxy]
+          HideMyAss.log "#{request.options[:proxy]} : #{response.code}"
 
           # Return on successful http code
           if (200..300).member?(response.code)
