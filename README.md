@@ -21,7 +21,7 @@ Or install it yourself as:
 ## Usage
 
     HideMyAss.options[:max_concurrency] = 3
-    response = HideMyAss::Request.get("www.google.com", timeout: 2)
+    response = HideMyAss.get("www.google.com", timeout: 2)
     => #<Typhoeus::Response @options={:return_code=>:ok ...>
 
 `HideMyAss::Request.get` will try successive proxies until one returns an HTTP
@@ -32,6 +32,7 @@ If you want more control, you can retrieve the proxies list and connect manually
     HideMyAss.proxies.each do |proxy|
       request = Typhoeus::Request.post(base_url, options)
       request.on_complete do |response|
+
         if # some success condition...
           @response = response
           HideMyAss.hydra.abort
@@ -52,7 +53,7 @@ or simply run:
 ## Roadmap
 
 * Hijack HTTP requests automatically
-* Get proxies other page numbers (currently 50 results only)
+* Get proxies form other page numbers (currently first 50 results only)
 * Improve tests suite
 * Clean code and refactor
 
