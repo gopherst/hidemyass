@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Hide My Ass! by jassa</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Hide My Ass!</h1>
+        <p>Hide My Ass! gem fetches and connects to proxies at www.hidemyass.com</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/jassa/hidemyass" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/jassa/hidemyass/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/jassa/hidemyass/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>HIDE MY ASS! <a href="https://travis-ci.org/jassa/hidemyass"><img src="https://travis-ci.org/jassa/hidemyass.png" alt="Build Status"></a>
+</h1>
+
+<p>Fetch and connect to proxies from <a href="http://www.hidemyass.com">www.hidemyass.com</a>.</p>
+
+<p>This ruby gem aims to connect you anonymously, it fetches proxies from hidemyass.com and tries each one until a successful connection is made.</p>
+
+<h2>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'hidemyass'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install hidemyass
+</code></pre>
+
+<h2>Usage</h2>
+
+<pre><code>HideMyAss.options[:max_concurrency] = 3
+response = HideMyAss.get("www.google.com", timeout: 2)
+=&gt; #&lt;Typhoeus::Response @options={:return_code=&gt;:ok ...&gt;
+</code></pre>
+
+<p><code>HideMyAss::Request.get</code> will try successive proxies until one returns an HTTP
+code between 200 and 300.</p>
+
+<p>If you want more control, you can retrieve the proxies list and connect manually</p>
+
+<pre><code>HideMyAss.proxies.each do |proxy|
+  request = Typhoeus::Request.post(base_url, options)
+  request.on_complete do |response|
+
+    if # some success condition...
+      @response = response
+      HideMyAss.hydra.abort
+    end
+  end
+end
+
+@response # holds successful response
+</code></pre>
+
+<p>To clear the cached proxies on every request (disabled by default):</p>
+
+<pre><code>HideMyAss.options[:clear_cache] = true
+</code></pre>
+
+<p>or simply run:</p>
+
+<pre><code>HideMyAss.clear_cache
+</code></pre>
+
+<h2>Roadmap</h2>
+
+<ul>
+<li>Hijack HTTP requests automatically</li>
+<li>Get proxies form other page numbers (currently first 50 results only)</li>
+<li>Improve tests suite</li>
+<li>Clean code and refactor</li>
+</ul><h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>), and make sure to include specs</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/jassa">jassa</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-30787224-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
