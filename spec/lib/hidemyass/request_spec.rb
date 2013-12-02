@@ -3,8 +3,8 @@ require "spec_helper"
 describe HideMyAss::Request do
 
   let(:url)     { "127.0.0.1" }
-  let(:res)     { stub(on_complete: nil).as_null_object }
-  let(:hydra)   { stub.as_null_object }
+  let(:res)     { double(on_complete: nil).as_null_object }
+  let(:hydra)   { double.as_null_object }
   let(:proxies) { [{host: "1.2.3.4", port: "80"}] }
   let(:proxy)   { "http://#{proxies[0][:host]}:#{proxies[0][:port]}" }
 
