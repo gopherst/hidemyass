@@ -55,7 +55,7 @@ module HideMyAss
     @proxies ||= begin
       html = get_hma_body
 
-      html.xpath('//table[@id="listtable"]/tr').collect do |node|
+      html.xpath('//table[@id="listable"]/tbody/tr').collect do |node|
         ip = HideMyAss::IP.new(node.at_xpath('td[2]/span'))
         next unless ip.valid?
         {
