@@ -9,14 +9,14 @@ describe HideMyAss::Request do
   let(:proxy)   { "http://#{proxies[0][:host]}:#{proxies[0][:port]}" }
 
   before do
-    HideMyAss.stub(:hydra).and_return(hydra)
-    HideMyAss.stub(:proxies).and_return(proxies)
+    allow(HideMyAss).to receive(:hydra).and_return(hydra)
+    allow(HideMyAss).to receive(:proxies).and_return(proxies)
   end
 
   [:get, :post, :put, :delete].each do |http_method|
     describe ".#{http_method}" do
       it "passes :#{http_method} message to typhoeus" do
-        Typhoeus::Request.should_receive(:new).
+        expect(Typhoeus::Request).to receive(:new).
           with(url, { :method => http_method }.merge(proxy: proxy)).
           and_return(res)
 
